@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>RingCentral Webhook Setup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .login-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #0073C1;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        .login-button:hover {
+            background-color: #005ea3;
+        }
+    </style>
+</head>
+<body>
+    <h1>RingCentral Webhook Setup</h1>
+    <p>Click the button below to authorize the application to set up webhooks for your RingCentral account.</p>
+    <a href="{{ authorize_uri }}" class="login-button">Login with RingCentral</a>
+</body>
+</html> 
