@@ -1,7 +1,4 @@
-azure-functions>=1.15.0
-ringcentral>=0.7.9
-python-dotenv>=0.19.0
-requests>=2.26.0
-Office365-REST-Python-Client>=2.3.13
-openai-whisper>=20231117
-torch>=2.1.0 
+azure-functions==1.17.0
+ringcentral==0.7.9
+requests==2.31.0
+Office365-REST-Python-Client==2.5.5 
