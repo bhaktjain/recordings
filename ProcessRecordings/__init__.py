@@ -31,21 +31,31 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         )
         platform = rcsdk.platform()
         
-        # Authenticate
-        platform.auth().set_data({
-            'access_token': os.environ["RC_ACCESS_TOKEN"],
-            'token_type': 'bearer',
-            'expires_in': 3600,
-            'scope': 'ReadContacts SubscriptionWebSocket ReadAccounts RingSense ReadCallLog ReadCallRecording SubscriptionWebhook Analytics WebSocket'
-        })
+        # Authenticate using JWT
+        try:
+            platform.auth().set_data({
+                'grant_type': 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+                'assertion': os.environ["RC_JWT_TOKEN"]
+            })
+        except Exception as auth_error:
+            logging.error(f"RingCentral authentication error: {str(auth_error)}")
+            return func.HttpResponse(
+                f"RingCentral authentication failed: {str(auth_error)}",
+                status_code=401
+            )
 
         # Initialize SharePoint client
-        ctx = ClientContext(os.environ["SHAREPOINT_SITE_URL"]).with_credentials(
-            ClientCredential(
+        try:
+            ctx = ClientContext(os.environ["SHAREPOINT_SITE_URL"]).with_client_credentials(
                 os.environ["SHAREPOINT_CLIENT_ID"],
                 os.environ["SHAREPOINT_CLIENT_SECRET"]
             )
-        )
+        except Exception as sp_error:
+            logging.error(f"SharePoint authentication error: {str(sp_error)}")
+            return func.HttpResponse(
+                f"SharePoint authentication failed: {str(sp_error)}",
+                status_code=401
+            )
 
         # Format phone number
         formatted_phone = format_phone_number(phone_number)
