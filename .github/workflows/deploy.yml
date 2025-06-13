@@ -25,6 +25,12 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+        pip install azure-functions
+
+    - name: Create function configuration
+      run: |
+        mkdir -p .python_packages
+        func azure functionapp fetch-app-settings ${{ env.AZURE_FUNCTIONAPP_NAME }}
 
     - name: Azure Login
       uses: azure/login@v1
@@ -36,4 +42,6 @@ jobs:
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
         package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-        respect-funcignore: true 
+        respect-funcignore: true
+        scm-do-build-during-deployment: true
+        enable-oryx-build: true 
